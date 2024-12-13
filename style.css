@@ -1,0 +1,120 @@
+@import "https://unpkg.com/open-props" layer(support.design-system);
+@import "https://unpkg.com/open-props/normalize.min.css" layer(support.demo);
+@import "https://unpkg.com/open-props/buttons.min.css" layer(support.demo);
+@import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" layer(support.demo);
+
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition: 
+      scale .8s var(--ease-in-out-5),
+      border-radius .8s var(--ease-in-out-5);
+    
+    &:has(.push-z[open]) {
+      scale: 95%;
+      border-radius: var(--radius-3);
+      overflow: hidden;
+    }
+  }
+}
+
+dialog.push-z {
+  --_duration: .5s;
+  
+  background: none;
+	box-shadow: none;
+  padding: 0;
+  overflow: clip;
+    
+  transition: 
+    display var(--_duration) allow-discrete, 
+    overlay var(--_duration) allow-discrete;
+  
+  &::backdrop {
+    transition: opacity var(--_duration) var(--ease-4);
+		opacity: 0;
+		background-color: light-dark(#0003, #0008);
+    cursor: zoom-out;
+  }
+  
+  & > section {
+    @media (prefers-reduced-motion: reduce) {
+      transition: opacity .7s var(--ease-2);
+      opacity: 0;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      transition: translate .7s var(--ease-elastic-in-out-2) .0s;
+      translate: 0 100%;
+    }
+  }
+  
+  &[open] {
+    &, &::backdrop {
+      opacity: 1;
+    }
+    
+    & > section {
+      opacity: 1;
+      translate: 0;
+      
+      @media (prefers-reduced-motion: no-preference) {
+        transition-delay: var(--_duration);
+        transition-timing-function: var(--ease-spring-2);
+      }
+    }
+  }
+
+  @starting-style {
+    &[open],
+    &[open]::backdrop {
+      opacity: 0;
+    }
+    &[open] > section {
+      opacity: 0;
+      translate: 0 100%;
+    }
+  }
+  
+  section {
+    inline-size: min(var(--size-content-2), 80vw);
+    aspect-ratio: var(--ratio-landscape);
+    
+    border-radius: var(--radius-3);
+		background: light-dark(white, var(--surface-2));
+
+    @media (orientation: portrait) {
+      aspect-ratio: var(--ratio-portrait);
+    }
+    
+    > header {
+      display: flex;
+			place-content: end;
+			padding: var(--size-3);
+      
+      > button {
+				--_bg: none;
+				--_border: none;
+
+				padding: var(--size-1);
+				aspect-ratio: var(--ratio-square);
+				border-radius: var(--radius-round);
+				box-shadow: 0 0 0 var(--_highlight-size) var(--_highlight);
+      }
+    }
+  }
+}
+
+
+
+
+@layer support.demo {
+  html {
+    background: var(--gradient-18);
+  }
+  body {
+    background: var(--surface-1);
+    display: grid;
+    place-content: center;
+    padding: var(--size-5);
+    gap: var(--size-5);
+  } 
+}
